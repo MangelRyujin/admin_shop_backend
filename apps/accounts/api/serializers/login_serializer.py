@@ -12,7 +12,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     
     class Meta(UserDetailsSerializer.Meta):
        model = get_user_model()
-       fields = UserDetailsSerializer.Meta.fields + ('document_type', 'document_id' ,'phone_number','country','city','address','groups')
+       fields = UserDetailsSerializer.Meta.fields + ('first_name','last_name','document_type', 'document_id' ,'phone_number','country','city','address','groups')
        
         
     def validate_username(self,data):

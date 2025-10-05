@@ -26,6 +26,8 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=40, null=True, blank=True)
+    last_name = models.CharField(max_length=40, null=True, blank=True)
     document_type = models.CharField(max_length=20, null=True, blank=True)
     document_id = models.CharField(max_length=20, null=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)

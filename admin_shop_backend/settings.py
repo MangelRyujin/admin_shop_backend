@@ -194,4 +194,5 @@ AUTHENTICATION_BACKENDS = [
 FRONTEND_URL = config("FRONTEND_URL", default="https://localhost:3000")
 
 # CORS
-CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", default="https://localhost:8000,https://localhost:3000").split(",")
+LIST_CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS',default='*')
+CORS_ALLOWED_ORIGINS = LIST_CORS_ALLOWED_ORIGINS.split(",")

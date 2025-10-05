@@ -86,7 +86,7 @@ class UserToggleStatusAPIView(generics.UpdateAPIView):
         else:
             user.is_active = True
         user.save()
-        return Response({"data": UserSerializer(user).data}, status=status.HTTP_200_OK)
+        return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
    
 class UserDeleteAPIView(generics.DestroyAPIView):
     permission_classes = (IsAuthenticated,IsAdminGroup)

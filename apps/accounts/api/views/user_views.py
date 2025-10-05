@@ -71,7 +71,7 @@ class UserUpdateAPIView(generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
-        return Response({"data": response.data}, status=status.HTTP_200_OK)
+        return Response(response.data, status=status.HTTP_200_OK)
 
 class UserToggleStatusAPIView(generics.UpdateAPIView):
     permission_classes = (IsAuthenticated, IsAdminGroup)

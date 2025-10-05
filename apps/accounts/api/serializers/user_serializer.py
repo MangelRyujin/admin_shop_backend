@@ -43,6 +43,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             'email',
             'first_name',
             'last_name',
+            'is_active',
             'groups',
             'group_ids'
         ]

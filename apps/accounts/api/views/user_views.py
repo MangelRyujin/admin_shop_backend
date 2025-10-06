@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, filters
 from rest_framework.pagination import PageNumberPagination
 from apps.accounts.api.serializers.change_password_serializer import ChangePasswordSerializer
 from apps.accounts.api.serializers.user_serializer import UserRegisterSerializer, UserSerializer, UserUpdateSerializer, UserUpdateStatusSerializer
@@ -15,7 +15,7 @@ class UserPagination(PageNumberPagination):
     """
     Custom pagination configuration
     """
-    page_size = 20
+    page_size = 25
     page_size_query_param = 'page_size'
     max_page_size = 100
 
@@ -28,6 +28,12 @@ class UserListView(generics.ListAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated, IsAdminGroup]
     pagination_class = UserPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = [
+        'email',       
+        'first_name',  
+        'last_name',    
+    ]
 
     def get_queryset(self):
         """
@@ -44,7 +50,7 @@ class UserRegisterAPIView(APIView):
         serializer = UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            return Response({'data': UserSerializer(user).data}, status=status.HTTP_201_CREATED)
+            return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class UserIdChangePasswordView(APIView):

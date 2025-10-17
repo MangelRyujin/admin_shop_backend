@@ -51,7 +51,10 @@ class OffertDetailSerializer(OffertSerializer):
     product_details = ProductListSerializer(source='product', read_only=True)
     
     class Meta(OffertSerializer.Meta):
-        fields = OffertSerializer.Meta.fields + ['product_details']
+        fields = [
+            'id', 'name', 'description', 'init_date', 'end_date', 
+            'product_name', 'product_code', 'is_active', 'product_details'
+        ]
 
 class ActiveOffertSerializer(serializers.ModelSerializer):
     """

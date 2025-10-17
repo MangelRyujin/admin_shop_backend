@@ -29,3 +29,17 @@ class Product(models.Model):
         db_table = 'product'
         
         
+class Offert(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='offerts')
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=255)
+    init_date = models.DateField(auto_now=False,auto_now_add=False)
+    end_date = models.DateField(auto_now=False,auto_now_add=False)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Offert"
+        verbose_name_plural = "Offerts"
+
+    def __str__(self):
+        return self.name

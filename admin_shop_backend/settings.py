@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     # LOCAL_APPS
     'apps.accounts',
+    'apps.inventory',
+    'apps.products',
     # THIRD_APPS
     "corsheaders",
     'django_filters',
@@ -194,5 +196,5 @@ AUTHENTICATION_BACKENDS = [
 FRONTEND_URL = config("FRONTEND_URL", default="https://localhost:3000")
 
 # CORS
-LIST_CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS',default='*')
+LIST_CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS',default='https://localhost:8000')
 CORS_ALLOWED_ORIGINS = LIST_CORS_ALLOWED_ORIGINS.split(",")

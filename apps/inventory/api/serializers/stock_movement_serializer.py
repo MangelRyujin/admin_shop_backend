@@ -31,7 +31,7 @@ class StockMovementSerializer(serializers.ModelSerializer):
         cant = data.get('cant')
 
         # Validación básica de cantidad
-        if cant <= 0:
+        if cant <= 0: # remove this validation "Model validate this field becouse your use MinValueValidator"
             raise serializers.ValidationError({
                 'cant': 'La cantidad debe ser mayor a 0'
             })

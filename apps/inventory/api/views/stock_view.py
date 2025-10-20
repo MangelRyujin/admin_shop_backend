@@ -110,7 +110,7 @@ class StockViewSet(viewsets.ModelViewSet):
             from apps.inventory.models import StockMovement
             movements = StockMovement.objects.filter(
                 Q(stock_one=stock) | Q(stock_two=stock)
-            ).order_by('-created_date')
+            ).order_by('-created_at')
             
             from apps.inventory.api.serializers.stock_movement_serializer import StockMovementSerializer
             page = self.paginate_queryset(movements)

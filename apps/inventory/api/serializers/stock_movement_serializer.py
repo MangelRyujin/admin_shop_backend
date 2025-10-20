@@ -11,7 +11,7 @@ class StockMovementSerializer(serializers.ModelSerializer):
     class Meta:
         model = StockMovement
         fields = '__all__'
-        read_only_fields = ('created_date', 'user')
+        read_only_fields = ('created_at', 'user')
 
     def get_stock_one_details(self, obj):
         """Esto es por si hace falta ver los detalles del primer stock"""
@@ -29,12 +29,6 @@ class StockMovementSerializer(serializers.ModelSerializer):
         stock_one = data.get('stock_one')
         stock_two = data.get('stock_two')
         cant = data.get('cant')
-
-        # Validación básica de cantidad
-        if cant <= 0: # remove this validation "Model validate this field becouse your use MinValueValidator"
-            raise serializers.ValidationError({
-                'cant': 'La cantidad debe ser mayor a 0'
-            })
 
         # Validaciones para MOVIMIENTOS SIMPLES (acción tipo 1)
         if action_type == '1':

@@ -14,13 +14,13 @@ from apps.inventory.api.serializers.stock_movement_serializer import (
 from utils.permission.admin import IsAdminGroup
 
 class StockMovementViewSet(viewsets.ModelViewSet):
-    queryset = StockMovement.objects.all().order_by('-created_date')
+    queryset = StockMovement.objects.all().order_by('-created_at')
     permission_classes = [IsAuthenticated, IsAdminGroup]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['action_operation', 'action_type', 'user', 'stock_one', 'stock_two']
     search_fields = ['motive', 'description', 'stock_one__product__name', 'stock_one__product__code']
-    ordering_fields = ['created_date', 'cant']
-    ordering = ['-created_date']
+    ordering_fields = ['created_at', 'cant']
+    ordering = ['-created_at']
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -72,11 +72,10 @@ class StockMovementViewSet(viewsets.ModelViewSet):
             end_date = request.query_params.get('end_date')
             
             if start_date:
-                queryset = queryset.filter(created_date__gte=start_date)
+                queryset = queryset.filter(created_at__gte=start_date)
             if end_date:
-                queryset = queryset.filter(created_date__lte=end_date)
+                queryset = queryset.filter(created_at__lte=end_date)
             
-            # Paginación como en tus otros endpoints
             page = self.paginate_queryset(queryset)
             if page is not None:
                 serializer = self.get_serializer(page, many=True)
@@ -102,7 +101,7 @@ class StockMovementViewSet(viewsets.ModelViewSet):
             start_date = datetime.now() - timedelta(days=days)
             
             summary = StockMovement.objects.filter(
-                created_date__gte=start_date
+                created_at__gte=start_date
             ).aggregate(
                 total_movements=Count('id'),
                 total_entries=Count('id', filter=Q(action_operation='2')),
@@ -112,7 +111,7 @@ class StockMovementViewSet(viewsets.ModelViewSet):
             
             # Detalle por tipo de movimiento
             by_type = StockMovement.objects.filter(
-                created_date__gte=start_date
+                created_at__gte=start_date
             ).values('action_type').annotate(
                 count=Count('id'),
                 total_quantity=Sum('cant')
@@ -148,7 +147,7 @@ class StockMovementViewSet(viewsets.ModelViewSet):
             
             movements = StockMovement.objects.filter(
                 Q(stock_one_id=stock_id) | Q(stock_two_id=stock_id)
-            ).order_by('-created_date')
+            ).order_by('-created_at')
             
             page = self.paginate_queryset(movements)
             if page is not None:

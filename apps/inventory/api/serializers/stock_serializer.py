@@ -36,8 +36,6 @@ class StockDetailSerializer(StockSerializer):
         return ProductListSerializer(obj.product).data
 
     class Meta(StockSerializer.Meta):
-        #fields = StockSerializer.Meta.fields + ('product_details',)
-        #fields = tuple(StockSerializer.Meta.fields) + ('product_details',)
         fields = [  # Lista explícita de campos
             'id', 'product', 'product_name', 'product_code', 'warehouse', 
             'warehouse_name', 'store_name', 'cant', 'unit_price', 'is_active', 

@@ -79,11 +79,13 @@ class CategoryDetailSerializer(CategorySerializer):
             is_deleted=False
         ).distinct().count()
 
+import requests
+from django.core.files.base import ContentFile
 class CategoryCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['name', 'description', 'image']
-
+    
     def validate_name(self, value):
         """Validar nombre único"""
         if len(value.strip()) < 2:

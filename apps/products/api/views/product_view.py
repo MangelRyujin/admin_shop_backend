@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from apps.products.models import Product
 from apps.products.api.serializers.product_serializer import ProductSerializer, ProductListSerializer
+from utils.pagination.pagination import Pagination
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.filter(is_deleted=False)
@@ -12,6 +13,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     search_fields = ['code', 'name', 'brand']
     ordering_fields = ['name', 'created_at', 'stars', 'total_sales']
     ordering = ['-created_at']
+    pagination_class = Pagination
 
     def get_serializer_class(self):
         if self.action == 'list':

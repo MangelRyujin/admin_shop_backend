@@ -12,6 +12,7 @@ from apps.products.api.serializers.offert_serializer import (
     OffertDetailSerializer,
     ActiveOffertSerializer
 )
+from utils.pagination.pagination import Pagination
 from utils.permission.admin import IsAdminGroup
 
 class OffertViewSet(viewsets.ModelViewSet):
@@ -22,6 +23,7 @@ class OffertViewSet(viewsets.ModelViewSet):
     search_fields = ['name', 'description', 'product__name']
     ordering_fields = ['init_date', 'end_date', 'name']
     ordering = ['-init_date']
+    pagination_class = Pagination
 
     def get_serializer_class(self):
         if self.action == 'create':

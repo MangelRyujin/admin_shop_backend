@@ -10,6 +10,7 @@ from apps.products.api.serializers.category_serializer import (
     CategorySerializer, CategoryDetailSerializer, CategoryCreateSerializer,
     CategoryWithProductsSerializer, SubCategorySerializer, SubCategoryCreateSerializer
 )
+from utils.pagination.pagination import Pagination
 from utils.permission.admin import IsAdminGroup
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -18,6 +19,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     search_fields = ['name', 'description']
     ordering_fields = ['name', 'created_at', 'products_count']
     ordering = ['name']
+    pagination_class = Pagination
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve', 'with_products', 'hierarchy']:
@@ -170,6 +172,7 @@ class SubCategoryViewSet(viewsets.ModelViewSet):
     search_fields = ['name', 'description']
     ordering_fields = ['name', 'created_at']
     ordering = ['name']
+    pagination_class = Pagination
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:

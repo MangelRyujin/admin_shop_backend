@@ -7,6 +7,7 @@ from django.db.models import Count
 from rest_framework.response import Response
 from apps.inventory.models import Stock
 from apps.inventory.api.serializers.stock_serializer import StockSerializer, StockCreateSerializer, StockDetailSerializer
+from utils.pagination.pagination import Pagination
 
 class StockViewSet(viewsets.ModelViewSet):
     queryset = Stock.objects.filter(is_active=True)
@@ -15,6 +16,7 @@ class StockViewSet(viewsets.ModelViewSet):
     search_fields = ['code', 'product__name', 'product__code']
     ordering_fields = ['cant', 'unit_price', 'created_at']
     ordering = ['-created_at']
+    pagination_class = Pagination
 
     def get_serializer_class(self):
         if self.action == 'create':

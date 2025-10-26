@@ -9,7 +9,7 @@ class StoreSerializer(serializers.ModelSerializer):
         fields = ("id", "name")
         
 class WarehouseSerializer(serializers.ModelSerializer):
-    store = StoreSerializer(read_only=True)
+    store_detail = StoreSerializer(source="store", read_only=True)
     
     class Meta:
         model = Warehouse

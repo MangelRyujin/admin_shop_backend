@@ -14,7 +14,4 @@ class WarehouseViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         queryset = Warehouse.objects.select_related('store')
-        store_id = self.request.query_params.get('store_id')
-        if store_id:
-            queryset = queryset.filter(store_id=store_id)
         return queryset

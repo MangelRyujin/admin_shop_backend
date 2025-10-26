@@ -99,33 +99,3 @@ class StockViewSet(viewsets.ModelViewSet):
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-
-    @action(detail=True, methods=['get'])
-    def movements(self, request, pk=None):
-        """
-        Obtener movimientos de este stock específico
-        """
-        try:
-            stock = self.get_object()
-            from apps.inventory.models import StockMovement
-            movements = StockMovement.objects.filter(
-                Q(stock_one=stock) | Q(stock_two=stock)
-            ).order_by('-created_at')
-            
-            from apps.inventory.api.serializers.stock_movement_serializer import StockMovementSerializer
-            page = self.paginate_queryset(movements)
-            if page is not None:
-                serializer = StockMovementSerializer(page, many=True)
-                return self.get_paginated_response(serializer.data)
-            
-            serializer = StockMovementSerializer(movements, many=True)
-            return Response(serializer.data)
-            
-        except Exception as e:
-            return Response(
-                {
-                    'error': 'Error al obtener movimientos del stock',
-                    'message': str(e)
-                },
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )

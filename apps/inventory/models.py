@@ -70,11 +70,8 @@ class StockMovement(models.Model):
     description = models.TextField(null=True, blank=True)
     motive = models.TextField(null=True, blank=True)
     cant = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False,blank=False, related_name='user_stock_movement') # remove
     create_by_user_id = models.IntegerField(null=True, blank=True)
     create_by_user_full_name = models.CharField(max_length=150, null=True, blank=True)
-    #stock_one=models.ForeignKey(Stock, on_delete=models.CASCADE, null=False,blank=False, related_name='stock_one_movement') # remove
-    #stock_two=models.ForeignKey(Stock, on_delete=models.CASCADE, null=True,blank=True, related_name='stock_two_movement') # remove
     stock_from_id = models.IntegerField(null=True, blank=True)
     stock_from_code = models.CharField(max_length=100, null=True, blank=True)
     stock_from_product_id = models.IntegerField(null=True, blank=True)

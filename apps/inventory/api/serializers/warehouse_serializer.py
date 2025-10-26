@@ -1,8 +1,15 @@
 from rest_framework import serializers
-from apps.inventory.models import Warehouse
+from apps.inventory.models import Store, Warehouse
 
+
+class StoreSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Store
+        fields = ("id", "name")
+        
 class WarehouseSerializer(serializers.ModelSerializer):
-    store_name = serializers.CharField(source='store.name', read_only=True)
+    store = StoreSerializer(read_only=True)
     
     class Meta:
         model = Warehouse

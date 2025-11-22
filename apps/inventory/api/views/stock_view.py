@@ -10,7 +10,7 @@ from apps.inventory.api.serializers.stock_serializer import StockSerializer, Sto
 from utils.pagination.pagination import Pagination
 
 class StockViewSet(viewsets.ModelViewSet):
-    queryset = Stock.objects.filter(is_active=True)
+    queryset = Stock.objects.all()
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['warehouse', 'product', 'is_active']
     search_fields = ['code', 'product__name', 'product__code']
@@ -28,7 +28,7 @@ class StockViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Stock.objects.select_related(
             'product', 'warehouse', 'warehouse__store'
-        ).filter(is_active=True)
+        ).all()
 
     def create(self, request, *args, **kwargs):
         try:
@@ -64,6 +64,33 @@ class StockViewSet(viewsets.ModelViewSet):
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+            
+    @action(detail=True, methods=['post'])
+    def change_status(self, request, pk=None):
+        try:
+            stock = Stock.objects.get(pk=pk)
+            stock.is_active = not stock.is_active
+            stock.save()
+            serializer = StockSerializer(stock)
+
+            return Response({
+                "data":serializer.data,
+            },status=status.HTTP_200_OK)
+
+        except Stock.DoesNotExist:
+            return Response(
+                {"error": "Stock no encontrado"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {
+                    "error": "Error al cambiar el estado del stock",
+                    "message": str(e)
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
 
     @action(detail=True, methods=['post'])
     def adjust_stock(self, request, pk=None):
@@ -101,3 +128,4 @@ class StockViewSet(viewsets.ModelViewSet):
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+            

@@ -13,8 +13,6 @@ class StockSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_at', 'updated_at')
 
 class StockCreateSerializer(serializers.ModelSerializer):
-    warehouse_name = serializers.CharField(source='warehouse.name', read_only=True)
-    product_name = serializers.CharField(source='product.name', read_only=True)
     
     class Meta:
         model = Stock

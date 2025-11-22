@@ -37,7 +37,7 @@ class Stock(models.Model):
     code = models.CharField(max_length=100, unique=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, related_name='warehouse_stocks')
     warehouse = models.ForeignKey(Warehouse, on_delete=models.SET_NULL, null=True, blank=True, related_name='product_stocks')
-    cant = models.PositiveIntegerField(default=0, validators=[MinValueValidator(1)])
+    cant = models.PositiveIntegerField(default=0)
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.01)])
     is_active = models.BooleanField(default=True)
     expire_date = models.DateField(null=True, blank=True)

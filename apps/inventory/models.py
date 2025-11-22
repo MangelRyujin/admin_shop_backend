@@ -19,7 +19,7 @@ class Store(models.Model):
         verbose_name_plural = "Stores"
 
 class Warehouse(models.Model):
-    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='warehouses')
+    store = models.ForeignKey(Store, on_delete=models.SET_NULL, null=True, blank=True, related_name='warehouses')
     name = models.CharField(max_length=255)
     address = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -35,8 +35,8 @@ class Warehouse(models.Model):
 
 class Stock(models.Model):
     code = models.CharField(max_length=100, unique=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='stocks')
-    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE, related_name='stocks')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, related_name='warehouse_stocks')
+    warehouse = models.ForeignKey(Warehouse, on_delete=models.SET_NULL, null=True, blank=True, related_name='product_stocks')
     cant = models.PositiveIntegerField(default=0, validators=[MinValueValidator(1)])
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.01)])
     is_active = models.BooleanField(default=True)

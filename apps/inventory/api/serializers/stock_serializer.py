@@ -13,19 +13,23 @@ class StockSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_at', 'updated_at')
 
 class StockCreateSerializer(serializers.ModelSerializer):
+    warehouse_name = serializers.CharField(source='warehouse.name', read_only=True)
+    product_name = serializers.CharField(source='product.name', read_only=True)
+    
     class Meta:
         model = Stock
-        fields = ('product', 'warehouse', 'cant', 'unit_price', 'code')
+        fields = ('product', 'warehouse', 'cant', 'unit_price', 'code', 'expire_date', 'threshold')
 
     def validate(self, data):
         # Validar que no exista stock duplicado para el mismo producto/warehouse
-        if Stock.objects.filter(
-            product=data['product'], 
-            warehouse=data['warehouse']
-        ).exists():
-            raise serializers.ValidationError(
-                "Ya existe stock para este producto en el almacén seleccionado."
-            )
+        if data['product'] and data['warehouse']:
+            if Stock.objects.filter(
+                product=data['product'], 
+                warehouse=data['warehouse']
+            ).exists():
+                raise serializers.ValidationError(
+                    "Ya existe stock para este producto en el almacén seleccionado."
+                )
         return data
 
 class StockDetailSerializer(StockSerializer):

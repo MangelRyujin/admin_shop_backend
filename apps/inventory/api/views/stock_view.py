@@ -42,9 +42,6 @@ class StockViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-    def perform_destroy(self, instance):
-        instance.is_active = False
-        instance.save()
 
     @action(detail=False, methods=['get'])
     def inventory_summary(self, request):

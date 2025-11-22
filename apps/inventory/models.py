@@ -52,7 +52,6 @@ class Stock(models.Model):
         db_table = 'stock'
         verbose_name = "Stock"
         verbose_name_plural = "Stocks"
-        unique_together = ['product', 'warehouse']
     
     
 class StockMovement(models.Model):

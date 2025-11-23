@@ -3,14 +3,12 @@ from django.core.validators import MinValueValidator
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    description = models.TextField(null=True, blank=True)
     image = models.ImageField(
         upload_to='categories/',
         null=True, 
         blank=True,
         help_text="Imagen representativa de la categoría"
     )
-    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -23,19 +21,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-    @property
-    def subcategories_count(self):
-        return self.subcategories.filter(is_active=True).count()
-
-    @property
-    def products_count(self):
-        """Cantidad total de productos en esta categoría (incluyendo subcategorías)"""
-        from django.db.models import Count
-        return Product.objects.filter(
-            models.Q(category=self) | models.Q(subcategory__category=self),
-            is_active=True,
-            is_deleted=False
-        ).distinct().count()
 
 class SubCategory(models.Model):
     category = models.ForeignKey(
@@ -44,8 +29,6 @@ class SubCategory(models.Model):
         related_name='subcategories'
     )
     name = models.CharField(max_length=100)
-    description = models.TextField(null=True, blank=True)
-    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -53,15 +36,11 @@ class SubCategory(models.Model):
         verbose_name = "SubCategory"
         verbose_name_plural = "SubCategories"
         ordering = ['name']
-        unique_together = ['category', 'name']  # Nombre único por categoría
+        unique_together = ['category', 'name']
 
     def __str__(self):
         return f"{self.category.name} → {self.name}"
 
-    @property
-    def products_count(self):
-        """Cantidad de productos en esta subcategoría"""
-        return self.products.filter(is_active=True, is_deleted=False).count()
 
 class Product(models.Model):
     code = models.CharField(max_length=100, unique=True)

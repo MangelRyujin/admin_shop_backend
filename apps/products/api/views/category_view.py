@@ -48,10 +48,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
                 return Response(response_serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response(
-                    {
-                        'error': 'Error de validación',
-                        'details': serializer.errors
-                    },
+                    
+                       
+                        serializer.errors
+                    ,
                     status=status.HTTP_400_BAD_REQUEST
                 )
         except Exception as e:
